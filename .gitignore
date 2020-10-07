@@ -1,0 +1,19 @@
+# Exclude config files for vscode
+**/.vs/*
+**/.vscode/**
+
+# Exclude Subscription information for local deployement
+**/Subscription.Localdeploy.*.json
+
+
+# Local .terraform directories
+**/.terraform/*
+**/terraform-provider-azurerm-master/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+
+
+**/ignoreFiles/**

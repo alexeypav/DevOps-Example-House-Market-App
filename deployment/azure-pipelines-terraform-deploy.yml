@@ -1,0 +1,57 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+stages:
+- stage: Deploy
+  jobs:
+  - deployment: DeployInfra
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    # creates an environment if it doesn’t exist
+    environment: 'Alexey-Dev'
+    strategy:
+      # default deployment strategy
+      runOnce:
+        deploy:
+          steps:
+
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              buildType: 'specific'
+              project: '763da4b0-f0c6-4b64-bb61-74588b2a10ff'
+              pipeline: '13'
+              buildVersionToDownload: 'latest'
+              downloadType: 'specific'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: TerraformInstaller@0
+            inputs:
+              terraformVersion: '0.12.20'
+          
+          - task: TerraformTaskV1@0
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.ArtifactsDirectory)/drop'
+              backendServiceArm: '$(subscriptionConnectionName)'
+              backendAzureRmResourceGroupName: 'terraformrg'
+              backendAzureRmStorageAccountName: 'terraformstorageae1d6e97'
+              backendAzureRmContainerName: 'terraform'
+              backendAzureRmKey: 'terraform.tfstate'
+          - task: CmdLine@2
+            inputs:
+              script: |
+                cd '$(System.ArtifactsDirectory)/drop'
+                pwd
+                ls -a
+              
+            
+          - task: TerraformTaskV1@0
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              workingDirectory: '$(System.ArtifactsDirectory)/drop'
+              environmentServiceNameAzureRM: '$(subscriptionConnectionName)'
+

@@ -1,0 +1,50 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+    - task: TerraformInstaller@0
+      inputs:
+        terraformVersion: '0.12.20'
+    - task: TerraformTaskV1@0
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: 'Infrastructure'
+        backendServiceArm: '$(subscriptionConnectionName)'
+        backendAzureRmResourceGroupName: 'terraformrg'
+        backendAzureRmStorageAccountName: 'terraformstorageae1d6e97'
+        backendAzureRmContainerName: 'terraform'
+        backendAzureRmKey: 'terraform.tfstate'
+
+    - task: TerraformTaskV1@0
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: 'Infrastructure'
+        environmentServiceNameAzureRM: '$(subscriptionConnectionName)'
+#    - task: ArchiveFiles@2
+#      displayName: 'Archive WebApp'
+#      inputs:
+#        rootFolderOrFile: Infrastructure
+#        includeRootFolder: true 
+#        archiveType: 'zip'
+#        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+#        replaceExistingArchive: true
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'Infrastructure'
+        Contents: |
+          **
+          !.terraform/**/*
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'

@@ -1,0 +1,96 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+body {
+    background: #ffffff;
+	font: Verdana, Arial, sans-serif;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+h2 strong {
+    font-weight: 700;
+}
+
+#main {
+    padding: 0px 0px 0px 0px;
+}
+#nav {
+    background: #FFFFFF !important;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+a:link {
+    color: black;
+}
+
+/* visited link */
+a:visited {
+    color: black;
+}
+
+.lead{
+	
+	font-size: 30px;
+	font-weight: 500;
+}
+
+.list-group-item, .card {
+    border-color: #F7F7F7;
+}
+
+.navbar-brand {
+    padding-left: 30px;
+}
+
+.scrollable {
+    position: absolute;
+    overflow-y: scroll;
+}
+
+.opp {
+    padding: 20px;
+    border-left: 6px solid #DDDDDD !important;
+}
+
+.opp h3 {
+    font-size: 1.2rem;
+}
+
+.opp.critical {
+    animation: border-pulsate 2s infinite;
+}
+
+.opp.critical .timeago {
+    color: #b71c1c;
+}
+
+.opp.stale {
+    border-left: 6px solid #FFC107 !important;
+}
+
+.opp.healthy {
+    border-left: 6px solid #8BC34A !important;
+}
+
+@keyframes border-pulsate {
+    0%   { border-left-color: #b71c1c}
+    50%  { border-left-color: #ef5350; }
+    100% { border-left-color: #b71c1c }
+}
+
+
+
+
+
+
