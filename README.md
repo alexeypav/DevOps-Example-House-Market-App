@@ -1,5 +1,6 @@
 # DevOps-Example-House-Market-App
 Example of an app that uses Cloud/IAC/Container/PaaS
+This was a quick example project so does not follow best practices 
 
 This gets data from TradeMe.co.nz and RealEstate.co.nz on number of daily house listings into a SQL Database, and displays the data on a basic HTML page.
 
