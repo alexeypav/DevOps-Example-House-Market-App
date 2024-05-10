@@ -21,12 +21,7 @@ function Execute-SqlQuery ($ConnectionString, $SQLQuery) {
 
 $sql_server_connection_string = "Data Source=tcp:$env:dbServert;Initial Catalog=$env:db;User Id=$env:dbUser;Password=$env:dbPassword"
 
-#Set-TimeZone "New Zealand Standard Time"
-
-
-
 $date = get-date -Format "yyyy-MM-dd"
-
 
 "Processing RENZ"
 
@@ -37,7 +32,6 @@ $resultAK = Invoke-RestMethod -Method get -Uri $uri
 $uri = "https://platform.realestate.co.nz/search/v1/listings?filter%5Bcategory%5D%5B0%5D=res_sale&page%5BgroupBy%5D=latest&page%5Blimit%5D=20"
 
 $resultNZ = Invoke-RestMethod -Method get -Uri $uri
-
 
 $resultNZ 
 
@@ -92,8 +86,6 @@ $totalListingsAK = $resultAK.meta.totalResults
 $totalTodayCount
 $totalTodayAKCount
 
-
-
 "Listings Today:  $totalTodayAKCount"
 
 $dateToday = $dateToday
@@ -139,11 +131,9 @@ $match1 = $html.tostring() -split "[`r`n]" | select-string "LV_listingTableHeade
 
 $totalListings = $match1.Substring(178, 5)
 
-
 if ($totalListings -like "*more*") { $totalListings = 32000 }
 
 $totalListings
-
 
 $html = invoke-restmethod "https://www.trademe.co.nz/Browse/Property/RegionListings.aspx?sort_order=expiry_desc&cid=3399&134=1"
 
@@ -152,9 +142,6 @@ $match2 = $html.tostring() -split "[`r`n]" | select-string "LV_listingTableHeade
 $totalListingsAK = $match2.Substring(178, 5)
 
 $totalListingsAK
-
-
-
 
 $totalTodayAKCount = 0
 $page = 1
@@ -178,9 +165,6 @@ do {
 
 $totalTodayAKCount
 
-
-
-
 $totalTodayCount = 0
 $page = 1
 
@@ -201,8 +185,6 @@ do {
 
 
 }while ($count -eq 24)
-
-
 
 "Listings Today:  $totalTodayAKCount"
 
@@ -242,8 +224,4 @@ $query = "IF NOT EXISTS (SELECT * FROM DataTradeMe WHERE Date = '$date')
 
 Execute-SqlQuery -ConnectionString $sql_server_connection_string -SQLQuery $query
 
-
-
-
 "Done, waiting 15 minutes..."
-
